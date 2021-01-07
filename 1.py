@@ -13,25 +13,43 @@ def load_image(name, colorkey=None):
     return image
 
 
+class Hero:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+
+    def render(self, screen):
+        image = load_image('creature.png')
+        screen.blit(image, (self.x, self.y))
+
+
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('Task')
-    size = width, height = 500, 500
+    size = width, height = 300, 300
     screen = pygame.display.set_mode(size)
     running = True
-    screen.fill((0, 0, 0))
+    screen.fill((255, 255, 255))
+    hero = Hero()
 
     while running:
-        pygame.mouse.set_visible(False)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEMOTION:
-                screen.fill((0, 0, 0))
-                image = load_image('arrow.png')
-                screen.blit(image, event.pos)
-                if not pygame.mouse.get_focused():
-                    screen.fill((0, 0, 0))
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    if hero.y - 10 >= 0:
+                        hero.y -= 10
+                if event.key == pygame.K_DOWN:
+                    if hero.y + 10 <= 300:
+                        hero.y += 10
+                if event.key == pygame.K_RIGHT:
+                    if hero.x + 10 <= 300:
+                        hero.x += 10
+                if event.key == pygame.K_LEFT:
+                    if hero.x - 10 >= 0:
+                        hero.x -= 10
+        screen.fill((255, 255, 255))
+        hero.render(screen)
         pygame.display.flip()
     pygame.quit()
